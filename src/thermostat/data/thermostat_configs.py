@@ -15,7 +15,29 @@ _BASE_KWARGS = dict(
     url="https://github.com/DFKI-NLP/",
 )
 
+_YELP_SST_KWARGS = dict(
+    dataset="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/thermostat/experiments/thermostat/datasets/glue_sst2",
+    label_classes=["1", "2"],
+    label_column="label",
+    text_column="text",
+    **_BASE_KWARGS,
+)
+_YELP_SST_BERT_KWARGS = dict(
+    model="textattack/bert-base-uncased-yelp-polarity",
+    **_YELP_SST_KWARGS,
+)
 
+_YELP_KWARGS = dict(
+    dataset="yelp_polarity",
+    label_classes=["1", "2"],
+    label_column="label",
+    text_column="text",
+    **_BASE_KWARGS,
+)
+_YELP_BERT_KWARGS = dict(
+    model="textattack/bert-base-uncased-yelp-polarity",
+    **_YELP_KWARGS,
+)
 # Base arguments for AG News dataset
 _AGNEWS_KWARGS = dict(
     dataset="ag_news",
@@ -156,6 +178,62 @@ class ThermostatConfig(datasets.BuilderConfig):
 
 
 builder_configs = [
+    ThermostatConfig(
+        name="yelp2sst2-bert-svs",
+        description="Yelp Polarity SST2 dataset, BERT model, Shapley Value Sampling explanations",
+        explainer="ShapleyValueSampling",
+        data_url="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/thermostat/experiments/thermostat/glue-sst2/bert/svs-200-sst2/seed_1/2022-11-21-20-46-34.ShapleyValueSampling.jsonl",
+        **_YELP_SST_BERT_KWARGS,
+    ),
+    ThermostatConfig(
+        name="yelp2sst2-bert-kshap200",
+        description="Yelp Polarity SST2 dataset, BERT model, Shapley Value Sampling explanations",
+        explainer="ShapleyValueSampling",
+        data_url="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/thermostat/experiments/thermostat/glue-sst2/bert/kernelshap-200-200-sst2/seed_1/2022-11-21-20-46-24.KernelShap.jsonl",
+        **_YELP_SST_BERT_KWARGS,
+    ),
+    ThermostatConfig(
+        name="yelp2sst2-bert-kshap2000",
+        description="Yelp Polarity SST2 dataset, BERT model, Shapley Value Sampling explanations",
+        explainer="ShapleyValueSampling",
+        data_url="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/thermostat/experiments/thermostat/glue-sst2/bert/kernelshap-2000-200-sst2/seed_1/",
+        **_YELP_SST_BERT_KWARGS,
+    ),
+    ThermostatConfig(
+        name="yelp_polarity-bert-svs",
+        description="Yelp Polarity dataset, BERT model, Shapley Value Sampling explanations",
+        explainer="ShapleyValueSampling",
+        data_url="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/new_thermostat_ds_creation/combined_svs_yelp.jsonl",
+        **_YELP_BERT_KWARGS,
+    ),
+    ThermostatConfig(
+        name="yelp_polarity_kshap200_seed1-bert-svs",
+        description="Yelp Polarity dataset, BERT model, Shapley Value Sampling explanations",
+        explainer="KernelShap",
+        data_url="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/thermostat/experiments/thermostat/yelp_polarity/bert/kernelshap-3600-sample200/seed_1/2022-08-23-16-49-42.KernelShap.jsonl",
+        **_YELP_BERT_KWARGS,
+    ),
+    ThermostatConfig(
+        name="yelp_polarity_kshap200_seed2-bert-svs",
+        description="Yelp Polarity dataset, BERT model, Shapley Value Sampling explanations",
+        explainer="KernelShap",
+        data_url="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/thermostat/experiments/thermostat/yelp_polarity/bert/kernelshap-3600-sample200/seed_2/2022-08-23-16-50-26.KernelShap.jsonl",
+        **_YELP_BERT_KWARGS,
+    ),
+    ThermostatConfig(
+        name="yelp_polarity_amortized_model_output",
+        description="Yelp Polarity dataset, BERT model, Shapley Value Sampling explanations",
+        explainer="KernelShap",
+        data_url="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/thermostat/experiments/thermostat/yelp_polarity/bert/AmortizedModel/seed_3/output.jsonl",
+        **_YELP_BERT_KWARGS,
+    ),
+    ThermostatConfig(
+        name="yelp_polarity_amortized_model_reference",
+        description="Yelp Polarity dataset, BERT model, Shapley Value Sampling explanations",
+        explainer="KernelShap",
+        data_url="/home/ubuntu/ychengha/iclr23_amortized_interpretability/AmortizedExplanation/thermostat/experiments/thermostat/yelp_polarity/bert/AmortizedModel/seed_3/ref.jsonl",
+        **_YELP_BERT_KWARGS,
+    ),
     ThermostatConfig(
         name="ag_news-albert-lgxa",
         description="AG News dataset, ALBERT model, Layer Gradient x Activation explanations",

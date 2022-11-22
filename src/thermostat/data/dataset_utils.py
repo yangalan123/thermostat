@@ -338,8 +338,8 @@ def load(config_str: str = None, **kwargs) -> Thermopack:
     :param kwargs: Additional keywords will all be passed to `datasets.load_dataset`. `path`, `name` and `split` are
     already reserved.
     """
-    assert config_str, f'Please enter a config. Available options: {list_configs()}'
-    assert config_str in list_configs(), f'Invalid config. Available options: {list_configs()}'
+    # assert config_str, f'Please enter a config. Available options: {list_configs()}'
+    # assert config_str in list_configs(), f'Invalid config. Available options: {list_configs()}'
 
     """ Following https://stackoverflow.com/a/23430335/6788442 """
     ld_kwargs = {key: value for key, value in kwargs.items() if

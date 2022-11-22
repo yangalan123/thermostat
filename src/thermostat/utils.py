@@ -102,7 +102,9 @@ def read_config(config_path, home_dir=None) -> Dict:
     experiment_path = f'{config["path"]}' \
         f'/{dataset_name}/{"/".join(config_path.split("/")[2:]).split(".jsonnet")[0]}'
     if not os.path.exists(experiment_path):
-        raise NotADirectoryError(f'{experiment_path}\nThis experiment path does not exist yet.')
+        #raise NotADirectoryError(f'{experiment_path}\nThis experiment path does not exist yet.')
+        print(f'{experiment_path}\nThis experiment path does not exist yet.')
+        os.makedirs(experiment_path, exist_ok=True)
 
     config['experiment_path'] = experiment_path
     return config

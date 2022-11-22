@@ -18,5 +18,6 @@ from .occlusion import (
 )
 
 from .svs import (
-    ExplainerShapleyValueSampling
+    ExplainerShapleyValueSampling,
+    ExplainerKernelShap,
 )

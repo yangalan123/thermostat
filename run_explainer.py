@@ -14,8 +14,10 @@ from thermostat.utils import detach_to_list, get_logger, get_time, read_config
 
 # Argument parser
 parser = argparse.ArgumentParser()
-parser.add_argument('-c', help='Config file', default='configs/mnli/bert/lime100.jsonnet')
-parser.add_argument('-home', help='Home directory', default=None)
+parser.add_argument('-c', help='Config file', default='configs/imdb/bert/lig.jsonnet')
+parser.add_argument('-home', help='Home directory', default=".")
+parser.add_argument('-seed', help='seed', default=123, type=int)
+parser.add_argument('-bsz', help='batch_size', default=1, type=int)
 args = parser.parse_args()
 config_file = args.c
 home_dir = args.home
@@ -29,13 +31,14 @@ logger.info(f'(Config) Config: \n{json.dumps(config, indent=2)}')  # Log config
 
 # Output file naming
 explainer_name = config['explainer']['name']
-path_out = f'{config["experiment_path"]}/{get_time()}.{explainer_name}.jsonl'  # TODO: Decide on CSV vs JSON
+os.makedirs(f'{config["experiment_path"]}/seed_{args.seed}', exist_ok=True)
+path_out = f'{config["experiment_path"]}/seed_{args.seed}/{get_time()}.{explainer_name}.jsonl'  # TODO: Decide on CSV vs JSON
 logger.info(f'(File I/O) Output file: {path_out}')
 assert not os.path.isfile(path_out), f'File {path_out} already exists!'
 
 # Random seeds
-torch.manual_seed(123)
-np.random.seed(123)
+torch.manual_seed(args.seed)
+np.random.seed(args.seed)
 
 # Device
 torch.cuda.empty_cache()
@@ -57,7 +60,8 @@ config['dataset']['version'] = str(dataset.version)
 # Explainer
 explainer = getattr(thermex, f'Explainer{config["explainer"]["name"]}').from_config(config=config)
 explainer.to(device)
-batch_size = config['explainer']['internal_batch_size'] if 'internal_batch_size' in config['explainer'] else 1
+# batch_size = config['explainer']['internal_batch_size'] if 'internal_batch_size' in config['explainer'] else 1
+batch_size = args.bsz if args.bsz >= 1 else config['explainer']['internal_batch_size']
 logger.info(f'(Progress) Loaded explainer')
 
 # DataLoader

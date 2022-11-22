@@ -1,5 +1,6 @@
 import torch
 from captum.attr import ShapleyValueSampling
+from captum.attr import KernelShap
 from typing import Dict
 
 from thermostat.explain import ExplainerAutoModelInitializer
@@ -37,3 +38,11 @@ class ExplainerShapleyValueSampling(ExplainerAutoModelInitializer):
                                                 target=target,
                                                 baselines=base_line)
         return attributions, predictions
+
+class ExplainerKernelShap(ExplainerShapleyValueSampling):
+    @classmethod
+    def from_config(cls, config):
+        res = super().from_config(config)
+        res.n_samples = config['explainer']['n_samples']
+        res.explainer = KernelShap(res.forward_func)
+        return res

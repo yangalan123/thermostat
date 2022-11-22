@@ -136,7 +136,8 @@ class ExplainerAutoModelInitializer(ExplainerCaptum):  # todo check if this is a
         # new change
             res.num_labels = len(config['dataset']['label_names'])
             # TODO: Assert that num_labels in dataset corresponds to classification head in model
-            res.model = AutoModelForSequenceClassification.from_pretrained(res.name_model, num_labels=res.num_labels)
+            # res.model = AutoModelForSequenceClassification.from_pretrained(res.name_model, num_labels=res.num_labels)
+            res.model = AutoModelForSequenceClassification.from_pretrained(res.name_model)
         else:
             res.model = getattr(transformers, config['model']['class']).from_pretrained(res.name_model)
 
