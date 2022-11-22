@@ -21,3 +21,8 @@ from .svs import (
     ExplainerShapleyValueSampling,
     ExplainerKernelShap,
 )
+
+from .shap import (
+    ExplainerLayerDeepLiftShap,
+    ExplainerLayerGradientShap,
+)
