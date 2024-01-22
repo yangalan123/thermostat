@@ -34,14 +34,14 @@ class ColorToken:
     def add_color(self, gamma, threshold=0):
         """ Needs to be explicitly called to calculate the color of a token """
         score = self.gamma_correction(self.attribution, gamma)
-        if score >= threshold:
-            r = str(int(255))
-            g = str(int(255 * (1 - score)))
-            b = str(int(255 * (1 - score)))
-        else:
-            b = str(int(255))
-            r = str(int(255 * (1 + score)))
-            g = str(int(255 * (1 + score)))
+        # if score >= threshold:
+        r = str(int(255))
+        g = str(int(255 * (1 - score)))
+        b = str(int(255 * (1 - score)))
+        # else:
+        #     b = str(int(255))
+        #     r = str(int(255 * (1 + score)))
+        #     g = str(int(255 * (1 + score)))
 
         # TODO: Add more color schemes from: https://colorbrewer2.org/#type=diverging&scheme=RdBu&n=5
         self.red = r
@@ -133,13 +133,14 @@ class Heatmap(TextField):
             'text': ''.join([t.token for t in self]),
             'ents': ents,
         }
+        # print(to_render)
 
         if labels:
             template = """
-            <mark class="entity" style="background: {bg}; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 2; 
+            <mark class="entity" style="background: {bg}; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 2;
             border-radius: 0.35em; box-decoration-break: clone; -webkit-box-decoration-break: clone">
                 {text}
-                <span style="font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; text-transform: 
+                <span style="font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; text-transform:
                 uppercase; vertical-align: middle; margin-left: 0.5rem">{label}</span>
             </mark>
             """
@@ -155,12 +156,15 @@ class Heatmap(TextField):
             to_render,
             style='ent',
             manual=True,
-            jupyter=is_in_jupyter(),
+            # jupyter=is_in_jupyter(),
             options={'template': template,
                      'colors': colors,
-                     }
+                     },
+            # minify=True,
         )
-        return html if not is_in_jupyter() else None
+        # print(html)
+        # return html if not is_in_jupyter() else None
+        return html
 
 
 def token_to_html(token, rgb):
